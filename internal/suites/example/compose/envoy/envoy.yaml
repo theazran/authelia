@@ -82,6 +82,7 @@ static_resources:
                         authorization_request:
                           allowed_headers:
                             patterns:
+                              - exact: accept
                               - exact: cookie
                               - exact: proxy-authorization
                           headers_to_add:
@@ -101,7 +102,6 @@ static_resources:
                           allowed_upstream_headers:
                             patterns:
                               - prefix: remote-
-                              - exact: set-cookie
                       failure_mode_allow: false
                   - name: envoy.filters.http.router
                     typed_config:
