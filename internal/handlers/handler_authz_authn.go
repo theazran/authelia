@@ -378,7 +378,7 @@ func handleVerifyGETAuthnCookieValidateUpdate(ctx *middlewares.AutheliaCtx, user
 
 	ctx.Logger.Debugf("Updated profile detected for user '%s'", userSession.Username)
 
-	if ctx.Configuration.Log.Level == "trace" {
+	if ctx.Configuration.Log.Level == logValueTrace {
 		generateVerifySessionHasUpToDateProfileTraceLogs(ctx, userSession, details)
 	}
 

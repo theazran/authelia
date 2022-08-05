@@ -133,7 +133,7 @@ func (p *SQLProvider) SchemaMigrate(ctx context.Context, up bool, version int) (
 	return p.schemaMigrate(ctx, currentVersion, version)
 }
 
-// nolint: gocyclo
+//nolint: gocyclo // This function is potentially complex through necessity. Refactor time permitting.
 func (p *SQLProvider) schemaMigrate(ctx context.Context, prior, target int) (err error) {
 	migrations, err := loadMigrations(p.name, prior, target)
 	if err != nil {

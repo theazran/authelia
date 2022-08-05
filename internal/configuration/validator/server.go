@@ -85,6 +85,7 @@ func ValidateServer(config *schema.Configuration, validator *schema.StructValida
 	ValidateServerEndpoints(config, validator)
 }
 
+// ValidateServerEndpoints checks server endpoint configuration is correct.
 func ValidateServerEndpoints(config *schema.Configuration, validator *schema.StructValidator) {
 	if len(config.Server.Endpoints.Authz) == 0 {
 		config.Server.Endpoints.Authz = schema.DefaultServerConfig.Endpoints.Authz

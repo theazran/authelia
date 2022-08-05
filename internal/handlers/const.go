@@ -54,6 +54,8 @@ const (
 )
 
 var (
+	logValueTrace = "trace"
+
 	valueEmpty = []byte("")
 	valueBasic = []byte("basic")
 )

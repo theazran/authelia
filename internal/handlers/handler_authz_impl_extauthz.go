@@ -11,8 +11,6 @@ import (
 )
 
 func authzGetObjectImplExtAuthz(ctx *middlewares.AutheliaCtx) (object authorization.Object, err error) {
-	ctx.Logger.Debugf("Obtaining Protected Resource Impl ExtAuthz")
-
 	var targetURL *url.URL
 
 	if targetURL, err = ctx.GetForwardedURL(); err != nil {
@@ -23,8 +21,6 @@ func authzGetObjectImplExtAuthz(ctx *middlewares.AutheliaCtx) (object authorizat
 }
 
 func authzHandleUnauthorizedImplExtAuthz(ctx *middlewares.AutheliaCtx, authn *Authn, redirectionURL *url.URL) {
-	ctx.Logger.Debugf("Handling Unauthorized Impl ExtAuthz")
-
 	var (
 		statusCode int
 	)
