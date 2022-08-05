@@ -11,6 +11,8 @@ import (
 )
 
 func authzGetObjectImplForwardAuth(ctx *middlewares.AutheliaCtx) (object authorization.Object, err error) {
+	ctx.Logger.Debugf("Obtaining Protected Resource Impl ForwardAuth")
+
 	var targetURL *url.URL
 
 	if targetURL, err = ctx.GetForwardedURL(); err != nil {
@@ -21,6 +23,8 @@ func authzGetObjectImplForwardAuth(ctx *middlewares.AutheliaCtx) (object authori
 }
 
 func authzHandleUnauthorizedImplForwardAuth(ctx *middlewares.AutheliaCtx, authn *Authn, redirectionURL *url.URL) {
+	ctx.Logger.Debugf("Handling Unauthorized Impl ForwardAuth")
+
 	var (
 		statusCode int
 	)

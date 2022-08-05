@@ -12,11 +12,17 @@ import (
 )
 
 func authzPortalURLFromHeader(ctx *middlewares.AutheliaCtx) (portalURL *url.URL, err error) {
+	ctx.Logger.Debugf("Gettng PortalURL from Header")
+
 	var rawURL []byte
 
 	if rawURL = ctx.XAutheliaURL(); rawURL == nil {
+		ctx.Logger.Debugf("Missing PortalURL from Header")
+
 		return nil, fmt.Errorf("missing X-Authelia-URL header")
 	}
+
+	ctx.Logger.Debugf("PortalURL is: %s", rawURL)
 
 	if portalURL, err = url.ParseRequestURI(string(rawURL)); err != nil {
 		return nil, err
@@ -26,11 +32,17 @@ func authzPortalURLFromHeader(ctx *middlewares.AutheliaCtx) (portalURL *url.URL,
 }
 
 func authzPortalURLFromQuery(ctx *middlewares.AutheliaCtx) (portalURL *url.URL, err error) {
+	ctx.Logger.Debugf("Gettng PortalURL from Query")
+
 	var rawURL []byte
 
 	if rawURL = ctx.QueryArgs().PeekBytes(queryArgumentRedirect); rawURL == nil {
+		ctx.Logger.Debugf("Missing PortalURL from Query")
+
 		return nil, nil
 	}
+
+	ctx.Logger.Debugf("PortalURL is: %s", rawURL)
 
 	if portalURL, err = url.ParseRequestURI(string(rawURL)); err != nil {
 		return nil, err
