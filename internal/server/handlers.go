@@ -163,23 +163,9 @@ func handleRouter(config schema.Configuration, providers middlewares.Providers) 
 
 	r.GET("/api/configuration/password-policy", middlewareAPI(handlers.PasswordPolicyConfigurationGET))
 
-	metricsVRMW := middlewares.NewMetricsVerifyRequest(providers.Metrics)
+	metricsAuthz := middlewares.NewMetricsVerifyRequest(providers.Metrics)
 
-	for name, endpoint := range config.Server.Endpoints.Authz {
-		path := fmt.Sprintf("/api/authz/%s", name)
-
-		logging.Logger().Debugf("Registering endpoint '%s' with config %+v", path, endpoint)
-
-		authz := handlers.NewAuthzBuilder().WithConfig(&config).WithEndpointConfig(endpoint).Build()
-
-		r.GET(path, middlewares.Wrap(metricsVRMW, middleware(authz.Handler)))
-		r.HEAD(path, middlewares.Wrap(metricsVRMW, middleware(authz.Handler)))
-
-		if name == "legacy" {
-			r.GET("/api/verify", middlewares.Wrap(metricsVRMW, middleware(authz.Handler)))
-			r.HEAD("/api/verify", middlewares.Wrap(metricsVRMW, middleware(authz.Handler)))
-		}
-	}
+	handleAuthz(r, middleware, metricsAuthz, &config)
 
 	r.POST("/api/checks/safe-redirection", middlewareAPI(handlers.CheckSafeRedirectionPOST))
 
@@ -346,6 +332,35 @@ func handleRouter(config schema.Configuration, providers middlewares.Providers) 
 	handler = middlewares.Wrap(middlewares.NewMetricsRequest(providers.Metrics), handler)
 
 	return handler
+}
+
+func handleAuthz(r *router.Router, bridge middlewares.Bridge, middleware middlewares.Basic, config *schema.Configuration) {
+	for name, endpoint := range config.Server.Endpoints.Authz {
+		path := fmt.Sprintf("/api/authz/%s", name)
+
+		logging.Logger().Debugf("Registering Authz Endpoint '%s' with config %+v", path, endpoint)
+
+		authz := handlers.NewAuthzBuilder().WithConfig(config).WithEndpointConfig(endpoint).Build()
+
+		r.GET(path, middlewares.Wrap(middleware, bridge(authz.Handler)))
+		r.HEAD(path, middlewares.Wrap(middleware, bridge(authz.Handler)))
+
+		if name == "legacy" {
+			logging.Logger().Debugf("Registering Authz Endpoint '/api/verify' with config %+v", endpoint)
+
+			r.GET("/api/verify", middlewares.Wrap(middleware, bridge(authz.Handler)))
+			r.HEAD("/api/verify", middlewares.Wrap(middleware, bridge(authz.Handler)))
+		}
+
+		if endpoint.Implementation == "ExtAuthz" {
+			path += "/{path:*}"
+
+			logging.Logger().Debugf("Registering Authz Endpoint '%s' with config %+v", path, endpoint)
+
+			r.GET(path, middlewares.Wrap(middleware, bridge(authz.Handler)))
+			r.HEAD(path, middlewares.Wrap(middleware, bridge(authz.Handler)))
+		}
+	}
 }
 
 func handleMetrics() fasthttp.RequestHandler {

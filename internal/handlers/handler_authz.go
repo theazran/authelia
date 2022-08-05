@@ -98,7 +98,7 @@ func (a *Authz) getPortalURL(ctx *middlewares.AutheliaCtx, object *authorization
 			}
 		}
 
-		if portalURL != nil && strings.HasSuffix(object.Domain, a.config.Domains[0].Name) {
+		if strings.HasSuffix(object.Domain, a.config.Domains[0].Name) {
 			return portalURL, nil
 		}
 
