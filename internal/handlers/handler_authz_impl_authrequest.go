@@ -11,6 +11,8 @@ import (
 )
 
 func authzGetObjectImplAuthRequest(ctx *middlewares.AutheliaCtx) (object authorization.Object, err error) {
+	ctx.Logger.Debugf("Obtaining Protected Resource Impl AuthRequest")
+
 	var targetURL *url.URL
 
 	if targetURL, err = url.ParseRequestURI(string(ctx.XOriginalURL())); err != nil {
@@ -21,6 +23,8 @@ func authzGetObjectImplAuthRequest(ctx *middlewares.AutheliaCtx) (object authori
 }
 
 func authzHandleUnauthorizedImplAuthRequest(ctx *middlewares.AutheliaCtx, authn *Authn, _ *url.URL) {
+	ctx.Logger.Debugf("Handling Unauthorized Impl AuthRequest")
+
 	ctx.Logger.Infof("Access to %s (method %s) is not authorized to user %s, responding with status code %d", authn.Object.URL.String(), authn.Method, authn.Username, fasthttp.StatusUnauthorized)
 	ctx.ReplyUnauthorized()
 }

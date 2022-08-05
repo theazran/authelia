@@ -11,6 +11,8 @@ import (
 )
 
 func authzGetObjectImplLegacy(ctx *middlewares.AutheliaCtx) (object authorization.Object, err error) {
+	ctx.Logger.Debugf("Obtaining Protected Resource Impl Legacy")
+
 	var targetURL *url.URL
 
 	if targetURL, err = ctx.GetOriginalURL(); err != nil {
@@ -21,6 +23,8 @@ func authzGetObjectImplLegacy(ctx *middlewares.AutheliaCtx) (object authorizatio
 }
 
 func authzHandleUnauthorizedImplLegacy(ctx *middlewares.AutheliaCtx, authn *Authn, redirectionURL *url.URL) {
+	ctx.Logger.Debugf("Handling Unauthorized Impl Legacy")
+
 	var (
 		statusCode int
 	)

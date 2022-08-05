@@ -71,10 +71,14 @@ func (a *Authz) Handler(ctx *middlewares.AutheliaCtx) {
 
 	switch isAuthzResult(authn.Level, required) {
 	case AuthzResultForbidden:
+		ctx.Logger.Debugf("Handling Forbidden")
+
 		ctx.Logger.Infof("Access to '%s' is forbidden to user %s", object.URL.String(), authn.Username)
 		ctx.ReplyForbidden()
 	case AuthzResultUnauthorized:
 		var handler AuthzUnauthorizedHandler
+
+		ctx.Logger.Debugf("Handling Unauthorized")
 
 		if authenticator != nil {
 			handler = authenticator.HandleUnauthorized
@@ -84,6 +88,8 @@ func (a *Authz) Handler(ctx *middlewares.AutheliaCtx) {
 
 		handler(ctx, &authn, a.getRedirectionURL(&object, portalURL))
 	case AuthzResultAuthorized:
+		ctx.Logger.Debugf("Handling Authorized")
+
 		a.fHandleAuthorized(ctx, &authn)
 	}
 }
@@ -152,7 +158,7 @@ func (a *Authz) authn(ctx *middlewares.AutheliaCtx) (authn Authn, authenticator 
 	}
 
 	if authenticator.CanHandleUnauthorized() {
-		return authn, authenticator, err
+		return authn, authenticator, nil
 	}
 
 	return authn, nil, nil
