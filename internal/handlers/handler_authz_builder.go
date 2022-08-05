@@ -114,6 +114,8 @@ func (b *AuthzBuilder) WithEndpointConfig(config schema.ServerAuthzEndpointConfi
 		b.WithImplementationForwardAuth()
 	case AuthzImplAuthRequest.String():
 		b.WithImplementationAuthRequest()
+	case AuthzImplExtAuthz.String():
+		b.WithImplementationExtAuthz()
 	default:
 		b.WithImplementationLegacy()
 	}
