@@ -12,9 +12,9 @@ import (
 )
 
 func authzPortalURLFromHeader(ctx *middlewares.AutheliaCtx) (portalURL *url.URL, err error) {
-	rawURL := ctx.XAutheliaURL()
+	var rawURL []byte
 
-	if rawURL == nil {
+	if rawURL = ctx.XAutheliaURL(); rawURL == nil {
 		return nil, fmt.Errorf("missing X-Authelia-URL header")
 	}
 
@@ -26,8 +26,9 @@ func authzPortalURLFromHeader(ctx *middlewares.AutheliaCtx) (portalURL *url.URL,
 }
 
 func authzPortalURLFromQuery(ctx *middlewares.AutheliaCtx) (portalURL *url.URL, err error) {
-	rawURL := ctx.QueryArgs().PeekBytes(queryArgumentRedirect)
-	if rawURL == nil {
+	var rawURL []byte
+
+	if rawURL = ctx.QueryArgs().PeekBytes(queryArgumentRedirect); rawURL == nil {
 		return nil, nil
 	}
 
