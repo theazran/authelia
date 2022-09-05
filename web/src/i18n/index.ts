@@ -12,8 +12,9 @@ i18n.use(Backend)
     .use(initReactI18next)
     .init({
         detection: {
-            order: ["querystring", "navigator"],
+            order: ["querystring", "localStorage", "navigator"],
             lookupQuerystring: "lng",
+            lookupLocalStorage: "lng",
         },
         backend: {
             loadPath: basePath + "/locales/{{lng}}/{{ns}}.json",
