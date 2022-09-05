@@ -40,7 +40,7 @@ i18n.use(Backend)
         interpolation: {
             escapeValue: false,
         },
-        debug: false,
+        debug: true,
     });
 
 export default i18n;
