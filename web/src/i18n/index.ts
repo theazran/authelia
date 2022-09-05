@@ -35,7 +35,7 @@ i18n.use(Backend)
         },
         supportedLngs: ["en", "de", "es", "fr", "nl-NL", "pt-PT", "ru", "sv", "sv-SE", "zh-CN", "zh-TW"],
         lowerCaseLng: false,
-        nonExplicitSupportedLngs: true,
+        nonExplicitSupportedLngs: false,
         interpolation: {
             escapeValue: false,
         },
