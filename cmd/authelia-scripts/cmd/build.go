@@ -20,6 +20,8 @@ func newBuildCmd() (cmd *cobra.Command) {
 		Example: cmdBuildExample,
 		Args:    cobra.NoArgs,
 		Run:     cmdBuildRun,
+
+		DisableAutoGenTag: true,
 	}
 
 	return cmd
@@ -144,7 +146,7 @@ func buildFrontend(branch string) {
 }
 
 func buildSwagger() {
-	swaggerVer := "4.12.0"
+	swaggerVer := "4.13.0"
 	cmd := utils.CommandWithStdout("bash", "-c", "wget -q https://github.com/swagger-api/swagger-ui/archive/v"+swaggerVer+".tar.gz -O ./v"+swaggerVer+".tar.gz")
 
 	err := cmd.Run()
