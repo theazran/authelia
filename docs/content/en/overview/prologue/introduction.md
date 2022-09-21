@@ -18,5 +18,5 @@ other features:
 
 * Several two-factor authentication methods.
 * Identity verification when registering second factor devices.
-* Self-service reset of user passwords.
+* Self-service reset of user passwords and API.
 * Banning accounts after too many attempts (known as regulation).
